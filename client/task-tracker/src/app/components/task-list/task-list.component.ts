@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Task } from '../../core/interfaces/task.interface';
 import { Router } from '@angular/router';
 import { TaskService } from '../../core/services/task.service';
-import { Subscription } from 'rxjs';
+import { Subscription, combineLatest } from 'rxjs';
 
 @Component({
   selector: 'task-list',
@@ -16,8 +16,19 @@ export class TaskListComponent implements OnInit, OnDestroy {
   constructor(private router: Router, private taskService: TaskService) { }
 
   ngOnInit(): void {
-    this.taskSub = this.taskService.tasks$.subscribe(tasks => {
-      this.tasks = tasks;
+    this.taskSub = combineLatest([
+      this.taskService.tasks$,
+      this.taskService.searchQuery$
+    ]).subscribe(([tasks, query]) => {
+      if (!query.trim()) {
+        this.tasks = tasks;
+      } else {
+        const lowerQuery = query.toLowerCase();
+        this.tasks = tasks.filter(task => 
+          task.title.toLowerCase().includes(lowerQuery) || 
+          task.description.toLowerCase().includes(lowerQuery)
+        );
+      }
       console.log('Tasks loaded:', this.tasks.length);
     });
   }

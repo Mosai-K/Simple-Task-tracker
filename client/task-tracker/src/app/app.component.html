@@ -4,8 +4,9 @@
       <a class="navbar-brand">
         <h3 routerLink="/tasks" class="clickable">📋 {{title}}</h3>
       </a>
-      <form class="d-flex flex-grow-1 " role="search">
-        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
+      <form class="d-flex flex-grow-1 " role="search" (submit)="$event.preventDefault()">
+        <input class="form-control me-2" type="search" placeholder="Search tasks..." aria-label="Search"
+          (input)="onSearch($event)" />
       </form>
       <ul class="nav nav-pills nav-justified">
         <li class="nav-item">

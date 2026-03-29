@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { TaskService } from './core/services/task.service';
 
 @Component({
   selector: 'app-root',
@@ -10,4 +11,10 @@ export class AppComponent {
   currentYear = new Date().getFullYear();
   angularVersion = '18.2.0';
 
+  constructor(private taskService: TaskService) { }
+
+  onSearch(event: Event): void {
+    const target = event.target as HTMLInputElement;
+    this.taskService.setSearchQuery(target.value);
+  }
 }

@@ -72,8 +72,14 @@ export class TaskService {
   private tasksSubject = new BehaviorSubject<Task[]>(this.initialTasks);
   public tasks$ = this.tasksSubject.asObservable();
 
+  private searchQuerySubject = new BehaviorSubject<string>('');
+  public searchQuery$ = this.searchQuerySubject.asObservable();
+
   constructor() { }
 
+  setSearchQuery(query: string): void {
+    this.searchQuerySubject.next(query);
+  }
   getTasks(): Task[] {
     return this.tasksSubject.getValue();
   }
