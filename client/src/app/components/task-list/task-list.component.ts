@@ -24,8 +24,8 @@ export class TaskListComponent implements OnInit, OnDestroy {
         this.tasks = tasks;
       } else {
         const lowerQuery = query.toLowerCase();
-        this.tasks = tasks.filter(task => 
-          task.title.toLowerCase().includes(lowerQuery) || 
+        this.tasks = tasks.filter(task =>
+          task.title.toLowerCase().includes(lowerQuery) ||
           task.description.toLowerCase().includes(lowerQuery)
         );
       }
@@ -54,11 +54,12 @@ export class TaskListComponent implements OnInit, OnDestroy {
     });
   }
 
-  // Delete task
   deleteTask(taskId: string): void {
     if (confirm('Are you sure you want to delete this task?')) {
-      this.taskService.deleteTask(taskId);
-      console.log('Task deleted:', taskId);
+      this.taskService.deleteTask(taskId).subscribe({
+        next: () => console.log('Task deleted:', taskId),
+        error: (err) => console.error('Failed to delete task', err)
+      });
     }
   }
 
@@ -92,8 +93,6 @@ export class TaskListComponent implements OnInit, OnDestroy {
     };
     return priorityClasses[priority] || 'bg-secondary';
   }
-
-  // Get priority label
   getPriorityLabel(priority: string): string {
     return priority.charAt(0).toUpperCase() + priority.slice(1);
   }

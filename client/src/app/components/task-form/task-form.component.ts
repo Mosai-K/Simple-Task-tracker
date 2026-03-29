@@ -36,16 +36,20 @@ export class TaskFormComponent implements OnInit {
       this.taskId = params.get('id');
       if (this.taskId) {
         this.isEditMode = true;
-        const task = this.taskService.getTask(this.taskId);
-        if (task) {
-          this.taskForm.patchValue({
-            title: task.title,
-            description: task.description,
-            status: task.status,
-            priority: task.priority,
-            dueDate: task.dueDate.split('T')[0]
-          });
-        }
+        this.taskService.getTask(this.taskId).subscribe({
+          next: (task) => {
+            if (task) {
+              this.taskForm.patchValue({
+                title: task.title,
+                description: task.description,
+                status: task.status,
+                priority: task.priority,
+                dueDate: task.dueDate ? task.dueDate.split('T')[0] : ''
+              });
+            }
+          },
+          error: (err) => console.error('Failed to get task', err)
+        });
       }
     });
   }
@@ -53,11 +57,16 @@ export class TaskFormComponent implements OnInit {
   onSubmit(): void {
     if (this.taskForm.valid) {
       if (this.isEditMode && this.taskId) {
-        this.taskService.updateTask(this.taskId, this.taskForm.value);
+        this.taskService.updateTask(this.taskId, this.taskForm.value).subscribe({
+          next: () => this.router.navigate(['/tasks']),
+          error: (err) => console.error('Failed to update task', err)
+        });
       } else {
-        this.taskService.addTask(this.taskForm.value);
+        this.taskService.addTask(this.taskForm.value).subscribe({
+          next: () => this.router.navigate(['/tasks']),
+          error: (err) => console.error('Failed to add task', err)
+        });
       }
-      this.router.navigate(['/tasks']);
     }
   }
 
