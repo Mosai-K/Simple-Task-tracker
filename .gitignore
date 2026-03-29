@@ -1,24 +1,21 @@
-# --- System / IDE Files ---
-.DS_Store
-Thumbs.db
+# --- Angular / Frontend ---
+node_modules/
+.angular/
+dist/
+out-tsc/
+
+# --- Env ---
+.env
+.env.*
+
+# --- IDE / OS ---
 .vscode/
 .idea/
-*.swp
+.DS_Store
 
-# --- Frontend ---
-
-node_modules/
-/client/task-tracker/dist/
-/client/task-tracker/build/
-/client/task-tracker/.env
-/client/task-tracker/.env.local
-
-
-# NET
+# --- .NET ---
 [Bb]in/
 [Oo]bj/
 *.user
 *.suo
-/server/.vs/
-
-# --- Shared ---
+.vs/
