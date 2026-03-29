@@ -1,0 +1,73 @@
+<div class="container py-4">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <div class="card shadow-sm border-0">
+        <div class="card-header bg-white border-bottom-0 pt-4 pb-0">
+          <h3 class="mb-0 fw-bold">{{ isEditMode ? 'Edit Task' : 'Create New Task' }}</h3>
+        </div>
+        <div class="card-body p-4">
+          <form [formGroup]="taskForm" (ngSubmit)="onSubmit()">
+            
+            <!-- Title -->
+            <div class="mb-3">
+              <label for="title" class="form-label fw-semibold">Title</label>
+              <input type="text" id="title" class="form-control" formControlName="title" placeholder="e.g. Design new landing page">
+              <div *ngIf="taskForm.get('title')?.invalid && taskForm.get('title')?.touched" class="text-danger small mt-1">
+                Title is required.
+              </div>
+            </div>
+
+            <!-- Description -->
+            <div class="mb-3">
+              <label for="description" class="form-label fw-semibold">Description</label>
+              <textarea id="description" class="form-control" rows="3" formControlName="description" placeholder="A brief description of this task..."></textarea>
+              <div *ngIf="taskForm.get('description')?.invalid && taskForm.get('description')?.touched" class="text-danger small mt-1">
+                Description is required.
+              </div>
+            </div>
+
+            <div class="row">
+              <!-- Status -->
+              <div class="col-md-6 mb-3">
+                <label for="status" class="form-label fw-semibold">Status</label>
+                <select id="status" class="form-select" formControlName="status">
+                  <option value="todo">To Do</option>
+                  <option value="in-progress">In Progress</option>
+                  <option value="completed">Done</option>
+                </select>
+              </div>
+
+              <!-- Priority -->
+              <div class="col-md-6 mb-3">
+                <label for="priority" class="form-label fw-semibold">Priority</label>
+                <select id="priority" class="form-select" formControlName="priority">
+                  <option value="low">Low</option>
+                  <option value="medium">Medium</option>
+                  <option value="high">High</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Due Date -->
+            <div class="mb-4">
+              <label for="dueDate" class="form-label fw-semibold">Due Date</label>
+              <input type="date" id="dueDate" class="form-control" formControlName="dueDate">
+              <div *ngIf="taskForm.get('dueDate')?.invalid && taskForm.get('dueDate')?.touched" class="text-danger small mt-1">
+                Due date is required.
+              </div>
+            </div>
+
+            <!-- Buttons -->
+            <div class="d-flex justify-content-end gap-2 border-top pt-4">
+              <button type="button" class="btn btn-light px-4" (click)="onCancel()">Cancel</button>
+              <button type="submit" class="btn btn-primary px-4" [disabled]="taskForm.invalid">
+                {{ isEditMode ? 'Save Changes' : 'Create Task' }}
+              </button>
+            </div>
+            
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
